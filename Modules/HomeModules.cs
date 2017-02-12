@@ -2,10 +2,11 @@ using Nancy;
 using AddressBook.Objects;
 using System.Collections.Generic;
 
-namespace AddressBook{
+namespace AddressBook
+{
   public class HomeModule : NancyModule
   {
-    public HomeModule
+    public HomeModule()
     {
       Get["/"]= _=> {
         List<Contact> allContacts = Contact.GetAll();
@@ -19,8 +20,13 @@ namespace AddressBook{
       };
       Post["/contact_added"]=_ => {
         Contact newContact = new Contact (Request.Form["name"],Request.Form["phoneNumber"],Request.Form["address"]);
-        return View["new_contact.cshtml", newContact];
+        return View["view_contact.cshtml", newContact];
       };
       Get["/contact/new"] =_=> View["new_contact.cshtml"];
+      Get["/contacts_cleared"] = _ => {
+        Contact.ClearAll();
+        return View["contacts_cleared.cshtml"];
+      };
     }
   }
+}
